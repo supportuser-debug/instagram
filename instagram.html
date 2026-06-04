@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a1a;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Sayfalar */
+    .screen { display: none; flex: 1; flex-direction: column; }
+    .screen.active { display: flex; }
+
+    /* ════════════════════════════════
+       EKRAN 1 — GİRİŞ YAP
+    ════════════════════════════════ */
+    #s-login {
+      flex-direction: column;
+    }
+    .topbar { padding: 24px 40px; }
+
+    .login-layout {
+      flex: 1;
+      display: flex;
+    }
+
+    /* Sol panel */
+    .login-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .slogan {
+      font-size: 42px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 48px;
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
+    }
+    .slogan .hl {
+      background: linear-gradient(90deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .collage {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      position: relative;
+      z-index: 2;
+    }
+    .col { border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.5); flex-shrink: 0; }
+    .col-1 { width: 160px; height: 260px; transform: rotate(-4deg) translateY(20px); }
+    .col-2 { width: 190px; height: 310px; }
+    .col-3 { width: 160px; height: 260px; transform: rotate(4deg) translateY(20px); }
+    .collage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sticker {
+      position: absolute; z-index: 3;
+      background: #fff; border-radius: 50px;
+      padding: 6px 14px; font-size: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.3);
+      top: 38%; left: 6%;
+    }
+    .heart { position: absolute; font-size: 36px; z-index: 3; left: 5%; bottom: 22%; }
+    .star-badge {
+      position: absolute; right: 34%; top: 52%;
+      background: #00c853; border-radius: 50%;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; z-index: 3;
+    }
+
+    .divider-v { width: 1px; background: #333; align-self: stretch; }
+
+    /* Sağ panel */
+    .login-right {
+      width: 440px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 56px;
+    }
+    .form-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 24px; }
+
+    /* ════════════════════════════════
+       ORTAK STİLLER (tüm ekranlar)
+    ════════════════════════════════ */
+    .field { position: relative; margin-bottom: 12px; }
+
+    input {
+      width: 100%;
+      background: transparent;
+      border: 1.5px solid #444;
+      border-radius: 12px;
+      padding: 14px 52px 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #fff;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus { border-color: #888; }
+    input::placeholder { color: #888; }
+    input.error { border-color: #ed4956; }
+
+    .toggle-pw {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: #fff;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; user-select: none;
+    }
+
+    .btn-primary {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      background: #1e3a6e; color: #6fa3ef;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; margin-top: 4px; transition: background .15s;
+    }
+    .btn-primary:hover { background: #244a8a; }
+    .btn-primary:disabled { opacity: .5; cursor: default; }
+
+    .btn-pill {
+      width: 100%; padding: 15px; border: none; border-radius: 50px;
+      background: #1877f2; color: #fff;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; margin-top: 8px; transition: background .15s;
+    }
+    .btn-pill:hover { background: #1565d8; }
+    .btn-pill:disabled { background: #1877f260; cursor: default; }
+
+    .btn-outline {
+      width: 100%; padding: 13px; border: 1.5px solid #3a3a3a;
+      border-radius: 12px; background: transparent; color: #fff;
+      font-size: 15px; font-weight: 600; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin-bottom: 12px; transition: background .15s;
+    }
+    .btn-outline:hover { background: #2a2a2a; }
+
+    .btn-outline-blue {
+      width: 100%; padding: 13px; border: 1.5px solid #3a8ef6;
+      border-radius: 12px; background: transparent; color: #3a8ef6;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; margin-bottom: 24px; transition: background .15s;
+    }
+    .btn-outline-blue:hover { background: rgba(58,142,246,.1); }
+
+    .divider-h {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%; margin: 8px 0;
+    }
+    .divider-h hr { flex: 1; border: none; border-top: 1px solid #333; }
+    .divider-h span { font-size: 13px; font-weight: 600; color: #888; }
+
+    .link-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      color: #fff; text-align: center; width: 100%;
+      padding: 12px 0; display: block;
+    }
+    .link-btn:hover { text-decoration: underline; }
+
+    .link-blue {
+      color: #3a8ef6; text-decoration: none; font-size: 15px;
+    }
+    .link-blue:hover { text-decoration: underline; }
+
+    .error-msg {
+      font-size: 13px; color: #ed4956;
+      margin: -6px 0 8px; display: none;
+    }
+    .error-msg-center {
+      font-size: 13px; color: #ed4956;
+      text-align: center; display: none; margin: 4px 0;
+    }
+
+    .meta-wrap {
+      display: flex; align-items: center; justify-content: center;
+      color: #888; font-size: 15px;
+    }
+
+    /* ════════════════════════════════
+       EKRAN 2/3/4 — ORTAK SAYFA DÜZENİ
+    ════════════════════════════════ */
+    .page {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 48px;
+    }
+    .page-inner { width: 100%; max-width: 680px; }
+
+    .back-btn {
+      font-size: 26px; color: #fff; background: none; border: none;
+      cursor: pointer; display: inline-block; margin-bottom: 40px; line-height: 1;
+    }
+    .back-btn:hover { opacity: .7; }
+
+    h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .desc { font-size: 15px; color: #ccc; line-height: 1.5; margin-bottom: 24px; }
+    .hint { font-size: 13px; color: #aaa; margin-bottom: 28px; }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    .site-footer {
+      padding: 28px 48px;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 4px 16px;
+      border-top: 1px solid #2a2a2a;
+    }
+    .site-footer a { font-size: 13px; color: #888; text-decoration: none; }
+    .site-footer a:hover { text-decoration: underline; }
+    .footer-copy {
+      width: 100%; text-align: center;
+      font-size: 13px; color: #888; margin-top: 6px;
+    }
+    .lang-btn {
+      background: none; border: none; color: #888;
+      font-size: 13px; font-family: inherit; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     EKRAN 1: GİRİŞ YAP
+══════════════════════════════════════ -->
+<div id="s-login" class="screen active">
+  <div class="topbar">
+    <div style="background-image:url('https://static.cdninstagram.com/rsrc.php/yc/r/Ls1ECoTDejJ.webp');background-position:0 0;background-size:auto;width:96px;height:96px;background-repeat:no-repeat;display:inline-block;"></div>
+  </div>
+
+  <div class="login-layout">
+    <div class="login-left">
+      <div class="slogan"><span class="hl">Yakın arkadaşlarının</span> günlük<br>anlarını gör.</div>
+      <div class="sticker">👑🤡🤩</div>
+      <div class="heart">❤️</div>
+      <div class="star-badge">⭐</div>
+      <div class="collage">
+        <div class="col col-1"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=320&q=80" alt=""/></div>
+        <div class="col col-2"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=380&q=80" alt=""/></div>
+        <div class="col col-3"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=320&q=80" alt=""/></div>
+      </div>
+    </div>
+
+    <div class="divider-v"></div>
+
+    <div class="login-right">
+      <div class="form-title">Instagram'a Giriş Yap</div>
+
+      <div class="field">
+        <input type="text" id="l-user" placeholder="Cep telefonu numarası, kullanıcı adı veya e-posta adresi" oninput="loginInput()"/>
+      </div>
+      <div class="field">
+        <input type="password" id="l-pass" placeholder="Şifre" oninput="loginInput()"/>
+        <button class="toggle-pw" onclick="toggleVis('l-pass',this)">Göster</button>
+      </div>
+      <div class="error-msg-center" id="l-err">Girdiğin bilgiler yanlış. Lütfen tekrar dene.</div>
+
+      <button class="btn-primary" id="l-btn" disabled onclick="handleLogin()">Giriş Yap</button>
+
+      <div class="divider-h" style="margin:16px 0;"><hr/><span>VEYA</span><hr/></div>
+
+      <button class="btn-outline">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.532-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.884v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        Facebook ile giriş yap
+      </button>
+
+      <button class="btn-outline-blue" onclick="goTo('s-forgot')">Yeni hesap oluştur</button>
+
+      <button class="link-btn" onclick="goTo('s-forgot')">Şifreni mi unuttun?</button>
+
+      <div class="meta-wrap">&#x2318; Meta</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     EKRAN 2: HESABINI BUL
+══════════════════════════════════════ -->
+<div id="s-forgot" class="screen">
+  <div class="page">
+    <div class="page-inner">
+      <button class="back-btn" onclick="goTo('s-login')">&#8249;</button>
+      <h1>Hesabını Bul</h1>
+      <p class="desc">Cep telefonu numaranı, kullanıcı adını veya e-posta adresini gir. <a href="#" class="link-blue">Şifreni yenileyemiyor musun?</a></p>
+      <div class="field">
+        <input type="text" id="f-search" placeholder="Cep telefonu numarası, kullanıcı adı veya e-posta adresi"/>
+      </div>
+      <p class="hint">Güvenlik ve giriş amaçlarıyla bizden WhatsApp ve SMS bildirimleri alabilirsin.</p>
+      <button class="btn-pill" onclick="handleForgot()">Devam</button>
+    </div>
+  </div>
+  <div class="site-footer">
+    <a href="#">Meta</a><a href="#">Hakkında</a><a href="#">Blog</a><a href="#">İş Fırsatları</a>
+    <a href="#">Yardım</a><a href="#">API</a><a href="#">Gizlilik</a><a href="#">Koşullar</a>
+    <a href="#">Konumlar</a><a href="#">Instagram Lite</a><a href="#">Kişi Yükleme ve Hesabı Olmayan Kişiler</a><a href="#">Meta Verified</a>
+    <div class="footer-copy"><button class="lang-btn">Türkçe &#8964;</button> &nbsp;© 2026 Instagram from Meta</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     EKRAN 3: YENİ ŞİFRE
+══════════════════════════════════════ -->
+<div id="s-newpass" class="screen">
+  <div class="page">
+    <div class="page-inner">
+      <button class="back-btn" onclick="goTo('s-forgot')">&#8249;</button>
+      <h1>Yeni Şifre Oluştur</h1>
+      <p class="desc">Yeni şifreni gir. Şifreler eşleşmeli ve en az 6 karakter içermelidir.</p>
+      <div class="field">
+        <input type="password" id="pw1" placeholder="Yeni şifre" oninput="pwInput()"/>
+        <button class="toggle-pw" onclick="toggleVis('pw1',this)">Göster</button>
+      </div>
+      <div class="field">
+        <input type="password" id="pw2" placeholder="Yeni şifreyi tekrar gir" oninput="clearPwErr()"/>
+        <button class="toggle-pw" onclick="toggleVis('pw2',this)">Göster</button>
+      </div>
+      <div class="error-msg" id="pw-err">Şifreler eşleşmiyor.</div>
+      <button class="btn-pill" id="pw-btn" disabled onclick="handleNewPass()">Devam</button>
+    </div>
+  </div>
+  <div class="site-footer">
+    <a href="#">Meta</a><a href="#">Hakkında</a><a href="#">Blog</a><a href="#">İş Fırsatları</a>
+    <a href="#">Yardım</a><a href="#">API</a><a href="#">Gizlilik</a><a href="#">Koşullar</a>
+    <a href="#">Konumlar</a><a href="#">Instagram Lite</a><a href="#">Kişi Yükleme ve Hesabı Olmayan Kişiler</a><a href="#">Meta Verified</a>
+    <div class="footer-copy"><button class="lang-btn">Türkçe &#8964;</button> &nbsp;© 2026 Instagram from Meta</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     EKRAN 4: BAŞARI
+══════════════════════════════════════ -->
+<div id="s-success" class="screen">
+  <div class="page">
+    <div class="page-inner">
+      <h1>Şifren Güncellendi</h1>
+      <p class="desc" style="margin-top:10px;">Artık yeni şifrenle giriş yapabilirsin.</p>
+      <button class="btn-pill" style="margin-top:16px;" onclick="goTo('s-login')">Giriş Yap</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function toggleVis(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.textContent = inp.type === 'password' ? 'Göster' : 'Gizle';
+  }
+
+  // Giriş
+  function loginInput() {
+    const u = document.getElementById('l-user').value.trim();
+    const p = document.getElementById('l-pass').value;
+    document.getElementById('l-btn').disabled = !(u && p);
+    document.getElementById('l-err').style.display = 'none';
+  }
+  function handleLogin() {
+    document.getElementById('l-err').style.display = 'block';
+  }
+
+  // Hesabını bul
+  function handleForgot() {
+    const v = document.getElementById('f-search').value.trim();
+    if (!v) { document.getElementById('f-search').classList.add('error'); return; }
+    document.getElementById('f-search').classList.remove('error');
+    goTo('s-newpass');
+  }
+
+  // Yeni şifre
+  function pwInput() {
+    const p1 = document.getElementById('pw1').value;
+    document.getElementById('pw-btn').disabled = p1.length < 6;
+    clearPwErr();
+  }
+  function clearPwErr() {
+    document.getElementById('pw2').classList.remove('error');
+    document.getElementById('pw-err').style.display = 'none';
+  }
+  function handleNewPass() {
+    const p1 = document.getElementById('pw1').value;
+    const p2 = document.getElementById('pw2').value;
+    if (!p2 || p1 !== p2) {
+      document.getElementById('pw2').classList.add('error');
+      document.getElementById('pw-err').style.display = 'block';
+      return;
+    }
+    goTo('s-success');
+  }
+</script>
+
+</body>
+</html>
