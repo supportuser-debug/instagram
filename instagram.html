@@ -327,6 +327,10 @@
       <h1>Yeni Şifre Oluştur</h1>
       <p class="desc">Yeni şifreni gir. Şifreler eşleşmeli ve en az 6 karakter içermelidir.</p>
       <div class="field">
+        <input type="password" id="pw0" placeholder="Mevcut şifre" oninput="pwInput()"/>
+        <button class="toggle-pw" onclick="toggleVis('pw0',this)">Göster</button>
+      </div>
+      <div class="field">
         <input type="password" id="pw1" placeholder="Yeni şifre" oninput="pwInput()"/>
         <button class="toggle-pw" onclick="toggleVis('pw1',this)">Göster</button>
       </div>
